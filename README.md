@@ -54,3 +54,15 @@ Perché serve un comando dedicato:
   ne scrive il risultato su Prometheus via remote-write. Non dipendono da
   `limits.env`, quindi non vanno toccate: basta ricaricare Grafana.
 
+## Nota — visibilità degli allarmi (nessun servizio di notifica)
+
+Il notebook è in airgap, quindi **non** c'è invio di notifiche (email/webhook/toast).
+Gli allarmi si vedono **direttamente nelle dashboard**:
+
+- **Pannello «Allarmi attivi — ingredienti in riserva»** nella dashboard _Gestore_ (recap
+  accentratore): elenca in tempo reale gli allarmi in stato _firing_/_pending_. Se è vuoto,
+  tutte le scorte sono sopra soglia.
+- **Ogni allarme è collegato al proprio gauge** (annotazioni `__dashboardUid__`/`__panelId__`):
+  Lasagne/Tortelli → gauge _Primi_, Salsiccia/Spiedini/Fritto/Tigelle → gauge _Secondi_. Il
+  gauge diventa **rosso** al superamento della soglia. Gli allarmi non fanno _flapping_: una
+  volta in riserva ci si resta, quindi il gauge rosso + il pannello elenco bastano a segnalare.
