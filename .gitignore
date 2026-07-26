@@ -1,0 +1,18 @@
+# credenziali reali: non versionare
+exporter.env
+limits.env
+# tool di formatting
+.venv/
+node_modules/
+.ruff_cache/
+# IDE
+.idea/
+# artefatti locali
+*.har
+.DS_Store
+__pycache__/
+*.pyc
+sagra-images.tar
+# file Grafana generati da render.py (sorgente: grafana/templates/**)
+grafana/provisioning/alerting/*.yaml
+grafana/dashboards/*.json

@@ -1,0 +1,10 @@
+node_modules/
+.venv/
+package-lock.json
+*.har
+.DS_Store
+# template con segnaposto %%VAR%% (non JSON/YAML validi finche' non renderizzati)
+*.tmpl
+# file Grafana generati da render.py
+grafana/dashboards/*.json
+grafana/provisioning/alerting/*.yaml

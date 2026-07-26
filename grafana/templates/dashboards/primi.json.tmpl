@@ -1,0 +1,410 @@
+{
+  "uid": "sagra-primi",
+  "title": "Primi",
+  "tags": ["sagra", "primi"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "time": { "from": "now-2h", "to": "now" },
+  "templating": { "list": [] },
+  "annotations": { "list": [] },
+  "panels": [
+    {
+      "id": 5,
+      "type": "barchart",
+      "title": "Lasagne — consumo al minuto",
+      "description": "Ritmo di vendita: porzioni di lasagne consumate al minuto (differenza del totale ordinato rispetto al minuto precedente). Ogni barra = 1 minuto; una tacca sull'asse X ogni ~5 minuti. Asse temporale in ora reale, segue la finestra della dashboard.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 18, "x": 0, "y": 0 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 1,
+          "noValue": "0",
+          "color": { "mode": "fixed", "fixedColor": "green" },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "axisPlacement": "auto",
+            "axisLabel": "porzioni/min",
+            "axisGridShow": true,
+            "thresholdsStyle": { "mode": "off" }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "auto",
+        "xField": "Time",
+        "showValue": "never",
+        "stacking": "none",
+        "groupWidth": 0.7,
+        "barWidth": 0.9,
+        "barRadius": 0,
+        "fullHighlight": false,
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 55,
+        "legend": {
+          "showLegend": false,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        },
+        "tooltip": { "mode": "single", "sort": "none" }
+      },
+      "interval": "1m",
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sagra:consumo_1m:lasagne",
+          "legendFormat": "consumo/min"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "gauge",
+      "title": "Lasagne — porzioni rimanenti",
+      "description": "Scorta iniziale (LASAGNE_MAX) meno il consumo aggregato (1 per Lasagne Tradizionali + 3/7 per Tris di pasta). Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 0 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "max": %%LASAGNE_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%LASAGNE_MAX%% - (sum(sagra_qt_totale{id=\"36\"}) + (3/7) * sum(sagra_qt_totale{id=\"37\"}))",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "barchart",
+      "title": "Tortelli ricotta — consumo al minuto",
+      "description": "Ritmo di vendita: pezzi di tortelli alla ricotta consumati al minuto (differenza del totale ordinato rispetto al minuto precedente). Ogni barra = 1 minuto; una tacca sull'asse X ogni ~5 minuti. Asse temporale in ora reale, segue la finestra della dashboard.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 18, "x": 0, "y": 8 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 1,
+          "noValue": "0",
+          "color": { "mode": "fixed", "fixedColor": "green" },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "axisPlacement": "auto",
+            "axisLabel": "pezzi/min",
+            "axisGridShow": true,
+            "thresholdsStyle": { "mode": "off" }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "auto",
+        "xField": "Time",
+        "showValue": "never",
+        "stacking": "none",
+        "groupWidth": 0.7,
+        "barWidth": 0.9,
+        "barRadius": 0,
+        "fullHighlight": false,
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 55,
+        "legend": {
+          "showLegend": false,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        },
+        "tooltip": { "mode": "single", "sort": "none" }
+      },
+      "interval": "1m",
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sagra:consumo_1m:tortelli_ricotta",
+          "legendFormat": "consumo/min"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "gauge",
+      "title": "Tortelli ricotta — pezzi rimanenti",
+      "description": "Scorta iniziale (TORTELLI_RICOTTA_MAX, in pezzi) meno il consumo aggregato: 8 pezzi per Tortelli alla Ricotta (porzione) + 3 pezzi ciascuno per Tris Tortelli Burro, Tris Tortelli Ragù e Tris di pasta. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 8 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "max": %%TORTELLI_RICOTTA_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%TORTELLI_RICOTTA_MAX%% - (8 * sum(sagra_qt_totale{id=\"409\"}) + 3 * sum(sagra_qt_totale{id=\"416\"}) + 3 * sum(sagra_qt_totale{id=\"441\"}) + 3 * sum(sagra_qt_totale{id=\"37\"}))",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "barchart",
+      "title": "Tortelli zucca — consumo al minuto",
+      "description": "Ritmo di vendita: pezzi di tortelli di zucca consumati al minuto (differenza del totale ordinato rispetto al minuto precedente). Ogni barra = 1 minuto; una tacca sull'asse X ogni ~5 minuti. Asse temporale in ora reale, segue la finestra della dashboard.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 18, "x": 0, "y": 16 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 1,
+          "noValue": "0",
+          "color": { "mode": "fixed", "fixedColor": "green" },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "axisPlacement": "auto",
+            "axisLabel": "pezzi/min",
+            "axisGridShow": true,
+            "thresholdsStyle": { "mode": "off" }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "auto",
+        "xField": "Time",
+        "showValue": "never",
+        "stacking": "none",
+        "groupWidth": 0.7,
+        "barWidth": 0.9,
+        "barRadius": 0,
+        "fullHighlight": false,
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 55,
+        "legend": {
+          "showLegend": false,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        },
+        "tooltip": { "mode": "single", "sort": "none" }
+      },
+      "interval": "1m",
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sagra:consumo_1m:tortelli_zucca",
+          "legendFormat": "consumo/min"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "gauge",
+      "title": "Tortelli zucca — pezzi rimanenti",
+      "description": "Scorta iniziale (TORTELLI_ZUCCA_MAX, in pezzi) meno il consumo aggregato: 8 pezzi ciascuno per Tortello Zucca Burro e Tortelloni Zucca Ragù (porzioni) + 3 pezzi ciascuno per Tris Tortelli Burro e Tris Tortelli Ragù. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 16 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "max": %%TORTELLI_ZUCCA_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%TORTELLI_ZUCCA_MAX%% - (8 * sum(sagra_qt_totale{id=\"370\"}) + 8 * sum(sagra_qt_totale{id=\"151\"}) + 3 * sum(sagra_qt_totale{id=\"416\"}) + 3 * sum(sagra_qt_totale{id=\"441\"}))",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "barchart",
+      "title": "Tortelli speck — consumo al minuto",
+      "description": "Ritmo di vendita: pezzi di tortelli speck consumati al minuto (differenza del totale ordinato rispetto al minuto precedente). Ogni barra = 1 minuto; una tacca sull'asse X ogni ~5 minuti. Asse temporale in ora reale, segue la finestra della dashboard.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 18, "x": 0, "y": 24 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 1,
+          "noValue": "0",
+          "color": { "mode": "fixed", "fixedColor": "green" },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "axisPlacement": "auto",
+            "axisLabel": "pezzi/min",
+            "axisGridShow": true,
+            "thresholdsStyle": { "mode": "off" }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "auto",
+        "xField": "Time",
+        "showValue": "never",
+        "stacking": "none",
+        "groupWidth": 0.7,
+        "barWidth": 0.9,
+        "barRadius": 0,
+        "fullHighlight": false,
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 55,
+        "legend": {
+          "showLegend": false,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        },
+        "tooltip": { "mode": "single", "sort": "none" }
+      },
+      "interval": "1m",
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sagra:consumo_1m:tortelli_speck",
+          "legendFormat": "consumo/min"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "gauge",
+      "title": "Tortelli speck — pezzi rimanenti",
+      "description": "Scorta iniziale (TORTELLI_SPECK_MAX, in pezzi) meno il consumo aggregato: 8 pezzi per Tortello Patate Speck (porzione) + 3 pezzi ciascuno per Tris Tortelli Burro e Tris Tortelli Ragù. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 24 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "max": %%TORTELLI_SPECK_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%TORTELLI_SPECK_MAX%% - (8 * sum(sagra_qt_totale{id=\"369\"}) + 3 * sum(sagra_qt_totale{id=\"416\"}) + 3 * sum(sagra_qt_totale{id=\"441\"}))",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    }
+  ]
+}

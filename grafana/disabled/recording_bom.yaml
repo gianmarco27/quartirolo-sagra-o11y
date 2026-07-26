@@ -1,0 +1,228 @@
+apiVersion: 1
+
+# Recording rule GRAFANA-MANAGED per il consumo BOM "al minuto".
+#
+# Perche' Grafana-managed (e non rule Prometheus): le regole di registrazione
+# vivono e vengono valutate in Grafana, coerentemente con alert e dashboard.
+# Grafana valuta ogni query ogni minuto (interval: 1m) e ne scrive il risultato
+# su Prometheus via remote-write (target_datasource_uid: prometheus). Serve
+# quindi Prometheus avviato con --web.enable-remote-write-receiver e, lato
+# Grafana, [recording_rules].default_datasource_uid = prometheus.
+#
+# Semantica: sagra_qt_totale e' un totale CUMULATIVO per articolo; il consumo
+# del minuto e' la differenza fra il totale ordinato "ora" e quello di "un
+# minuto fa" (offset 1m), aggregato secondo i pesi BOM. clamp_min(..., 0) evita
+# valori negativi al reset dei contatori del gestionale (es. cambio giornata).
+# Ogni serie sagra:consumo_1m:<bom> ha 1 campione al minuto e alimenta i
+# barchart delle dashboard Primi/Secondi.
+#
+# File senza soglie: passa da tools/render.py solo per uniformita' (nessun
+# segnaposto tra doppi percento da interpolare).
+
+groups:
+  - orgId: 1
+    name: Consumo BOM (registrazione 1m)
+    folder: Sagra
+    interval: 1m
+    rules:
+      # --- Primi ---
+      - uid: sagra-rec-lasagne
+        title: Consumo 1m — lasagne
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: prometheus
+            model:
+              refId: A
+              datasource:
+                type: prometheus
+                uid: prometheus
+              editorMode: code
+              instant: true
+              range: false
+              expr: 'clamp_min((sum(sagra_qt_totale{id="36"}) + (3/7) * sum(sagra_qt_totale{id="37"})) - (sum(sagra_qt_totale{id="36"} offset 1m) + (3/7) * sum(sagra_qt_totale{id="37"} offset 1m)), 0) or vector(0)'
+              intervalMs: 1000
+              maxDataPoints: 43200
+        record:
+          metric: sagra:consumo_1m:lasagne
+          from: A
+          target_datasource_uid: prometheus
+        for: 0s
+
+      - uid: sagra-rec-tortelli-ricotta
+        title: Consumo 1m — tortelli ricotta
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: prometheus
+            model:
+              refId: A
+              datasource:
+                type: prometheus
+                uid: prometheus
+              editorMode: code
+              instant: true
+              range: false
+              expr: 'clamp_min((8 * sum(sagra_qt_totale{id="409"}) + 3 * sum(sagra_qt_totale{id="416"}) + 3 * sum(sagra_qt_totale{id="441"}) + 3 * sum(sagra_qt_totale{id="37"})) - (8 * sum(sagra_qt_totale{id="409"} offset 1m) + 3 * sum(sagra_qt_totale{id="416"} offset 1m) + 3 * sum(sagra_qt_totale{id="441"} offset 1m) + 3 * sum(sagra_qt_totale{id="37"} offset 1m)), 0) or vector(0)'
+              intervalMs: 1000
+              maxDataPoints: 43200
+        record:
+          metric: sagra:consumo_1m:tortelli_ricotta
+          from: A
+          target_datasource_uid: prometheus
+        for: 0s
+
+      - uid: sagra-rec-tortelli-zucca
+        title: Consumo 1m — tortelli zucca
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: prometheus
+            model:
+              refId: A
+              datasource:
+                type: prometheus
+                uid: prometheus
+              editorMode: code
+              instant: true
+              range: false
+              expr: 'clamp_min((8 * sum(sagra_qt_totale{id="370"}) + 8 * sum(sagra_qt_totale{id="151"}) + 3 * sum(sagra_qt_totale{id="416"}) + 3 * sum(sagra_qt_totale{id="441"})) - (8 * sum(sagra_qt_totale{id="370"} offset 1m) + 8 * sum(sagra_qt_totale{id="151"} offset 1m) + 3 * sum(sagra_qt_totale{id="416"} offset 1m) + 3 * sum(sagra_qt_totale{id="441"} offset 1m)), 0) or vector(0)'
+              intervalMs: 1000
+              maxDataPoints: 43200
+        record:
+          metric: sagra:consumo_1m:tortelli_zucca
+          from: A
+          target_datasource_uid: prometheus
+        for: 0s
+
+      - uid: sagra-rec-tortelli-speck
+        title: Consumo 1m — tortelli speck
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: prometheus
+            model:
+              refId: A
+              datasource:
+                type: prometheus
+                uid: prometheus
+              editorMode: code
+              instant: true
+              range: false
+              expr: 'clamp_min((8 * sum(sagra_qt_totale{id="369"}) + 3 * sum(sagra_qt_totale{id="416"}) + 3 * sum(sagra_qt_totale{id="441"})) - (8 * sum(sagra_qt_totale{id="369"} offset 1m) + 3 * sum(sagra_qt_totale{id="416"} offset 1m) + 3 * sum(sagra_qt_totale{id="441"} offset 1m)), 0) or vector(0)'
+              intervalMs: 1000
+              maxDataPoints: 43200
+        record:
+          metric: sagra:consumo_1m:tortelli_speck
+          from: A
+          target_datasource_uid: prometheus
+        for: 0s
+
+      # --- Secondi ---
+      - uid: sagra-rec-salsiccia
+        title: Consumo 1m — salsiccia
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: prometheus
+            model:
+              refId: A
+              datasource:
+                type: prometheus
+                uid: prometheus
+              editorMode: code
+              instant: true
+              range: false
+              expr: 'clamp_min((sum(sagra_qt_totale{id="43"}) + sum(sagra_qt_totale{id="44"})) - (sum(sagra_qt_totale{id="43"} offset 1m) + sum(sagra_qt_totale{id="44"} offset 1m)), 0) or vector(0)'
+              intervalMs: 1000
+              maxDataPoints: 43200
+        record:
+          metric: sagra:consumo_1m:salsiccia
+          from: A
+          target_datasource_uid: prometheus
+        for: 0s
+
+      - uid: sagra-rec-spiedini-pesce
+        title: Consumo 1m — spiedini di pesce
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: prometheus
+            model:
+              refId: A
+              datasource:
+                type: prometheus
+                uid: prometheus
+              editorMode: code
+              instant: true
+              range: false
+              expr: 'clamp_min((3 * sum(sagra_qt_totale{id="411"})) - (3 * sum(sagra_qt_totale{id="411"} offset 1m)), 0) or vector(0)'
+              intervalMs: 1000
+              maxDataPoints: 43200
+        record:
+          metric: sagra:consumo_1m:spiedini_pesce
+          from: A
+          target_datasource_uid: prometheus
+        for: 0s
+
+      - uid: sagra-rec-fritto-misto
+        title: Consumo 1m — fritto misto (cartoni)
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: prometheus
+            model:
+              refId: A
+              datasource:
+                type: prometheus
+                uid: prometheus
+              editorMode: code
+              instant: true
+              range: false
+              expr: 'clamp_min((sum(sagra_qt_totale{id="42"}) / 13) - (sum(sagra_qt_totale{id="42"} offset 1m) / 13), 0) or vector(0)'
+              intervalMs: 1000
+              maxDataPoints: 43200
+        record:
+          metric: sagra:consumo_1m:fritto_misto
+          from: A
+          target_datasource_uid: prometheus
+        for: 0s
+
+      - uid: sagra-rec-tigelle
+        title: Consumo 1m — tigelle
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: prometheus
+            model:
+              refId: A
+              datasource:
+                type: prometheus
+                uid: prometheus
+              editorMode: code
+              instant: true
+              range: false
+              expr: 'clamp_min((sum(sagra_qt_totale{id="58"}) + sum(sagra_qt_totale{id="59"}) + sum(sagra_qt_totale{id="60"}) + sum(sagra_qt_totale{id="176"})) - (sum(sagra_qt_totale{id="58"} offset 1m) + sum(sagra_qt_totale{id="59"} offset 1m) + sum(sagra_qt_totale{id="60"} offset 1m) + sum(sagra_qt_totale{id="176"} offset 1m)), 0) or vector(0)'
+              intervalMs: 1000
+              maxDataPoints: 43200
+        record:
+          metric: sagra:consumo_1m:tigelle
+          from: A
+          target_datasource_uid: prometheus
+        for: 0s

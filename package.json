@@ -1,0 +1,9 @@
+{
+  "name": "sagra-monitoraggio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tooling di formatting (prettier) per lo stack di monitoraggio sagra",
+  "devDependencies": {
+    "prettier": "3.3.3"
+  }
+}

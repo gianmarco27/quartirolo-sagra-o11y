@@ -1,0 +1,374 @@
+{
+  "uid": "sagra-gestore",
+  "title": "Gestore centrale — Riepilogo",
+  "tags": ["sagra", "gestore", "riepilogo"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "time": { "from": "now-2d", "to": "now" },
+  "templating": { "list": [] },
+  "annotations": { "list": [] },
+  "panels": [
+    {
+      "id": 1,
+      "type": "gauge",
+      "title": "Lasagne — porzioni rimanenti",
+      "description": "Scorta iniziale (LASAGNE_MAX) meno il consumo aggregato (1 per Lasagne Tradizionali + 3/7 per Tris di pasta). Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 9, "w": 6, "x": 0, "y": 0 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "max": %%LASAGNE_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%LASAGNE_MAX%% - (sum(sagra_qt_totale{id=\"36\"}) + (3/7) * sum(sagra_qt_totale{id=\"37\"}))",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "gauge",
+      "title": "Tortelli ricotta (verdi) — pezzi rimanenti",
+      "description": "Scorta iniziale (TORTELLI_RICOTTA_MAX, in pezzi) meno il consumo aggregato: 8 pezzi per Tortelli alla Ricotta (porzione) + 3 pezzi ciascuno per Tris Tortelli Burro, Tris Tortelli Ragù e Tris di pasta. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 9, "w": 6, "x": 6, "y": 0 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "max": %%TORTELLI_RICOTTA_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%TORTELLI_RICOTTA_MAX%% - (8 * sum(sagra_qt_totale{id=\"409\"}) + 3 * sum(sagra_qt_totale{id=\"416\"}) + 3 * sum(sagra_qt_totale{id=\"441\"}) + 3 * sum(sagra_qt_totale{id=\"37\"}))",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "gauge",
+      "title": "Tortelli zucca — pezzi rimanenti",
+      "description": "Scorta iniziale (TORTELLI_ZUCCA_MAX, in pezzi) meno il consumo aggregato: 8 pezzi ciascuno per Tortello Zucca Burro e Tortelloni Zucca Ragù (porzioni) + 3 pezzi ciascuno per Tris Tortelli Burro e Tris Tortelli Ragù. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 9, "w": 6, "x": 12, "y": 0 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "max": %%TORTELLI_ZUCCA_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%TORTELLI_ZUCCA_MAX%% - (8 * sum(sagra_qt_totale{id=\"370\"}) + 8 * sum(sagra_qt_totale{id=\"151\"}) + 3 * sum(sagra_qt_totale{id=\"416\"}) + 3 * sum(sagra_qt_totale{id=\"441\"}))",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "gauge",
+      "title": "Tortelli speck — pezzi rimanenti",
+      "description": "Scorta iniziale (TORTELLI_SPECK_MAX, in pezzi) meno il consumo aggregato: 8 pezzi per Tortello Patate Speck (porzione) + 3 pezzi ciascuno per Tris Tortelli Burro e Tris Tortelli Ragù. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 9, "w": 6, "x": 18, "y": 0 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "max": %%TORTELLI_SPECK_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%TORTELLI_SPECK_MAX%% - (8 * sum(sagra_qt_totale{id=\"369\"}) + 3 * sum(sagra_qt_totale{id=\"416\"}) + 3 * sum(sagra_qt_totale{id=\"441\"}))",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "gauge",
+      "title": "Salsiccia — pezzi rimanenti",
+      "description": "Scorta iniziale (SALSICCIA_MAX, in pezzi) meno il consumo aggregato: 1 pezzo per Grigliata Mista Carne + 1 pezzo per Salsiccia e Patatine. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 9, "w": 6, "x": 0, "y": 9 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "max": %%SALSICCIA_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%SALSICCIA_MAX%% - (sum(sagra_qt_totale{id=\"43\"}) + sum(sagra_qt_totale{id=\"44\"}))",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "gauge",
+      "title": "Spiedini di pesce — unità rimanenti",
+      "description": "Scorta iniziale (SPIEDINI_PESCE_MAX, in unità) meno il consumo: 3 unità per ogni piatto Spiedini di Pesce 3Pz. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 9, "w": 6, "x": 6, "y": 9 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "max": %%SPIEDINI_PESCE_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%SPIEDINI_PESCE_MAX%% - (3 * sum(sagra_qt_totale{id=\"411\"}))",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "gauge",
+      "title": "Fritto misto — cartoni rimanenti",
+      "description": "Scorta iniziale (FRITTO_MISTO_MAX, in cartoni; 1 cartone = 13 piatti) meno il consumo: qt(Fritto Misto Mare) / 13. Verde = abbondante, giallo = in calo, rosso = quasi esaurito. Alert quando restano meno di 2 cartoni.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 9, "w": 6, "x": 12, "y": 9 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 1,
+          "min": 0,
+          "max": %%FRITTO_MISTO_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%FRITTO_MISTO_MAX%% - (sum(sagra_qt_totale{id=\"42\"}) / 13)",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "gauge",
+      "title": "Tigelle — unità rimanenti",
+      "description": "Scorta iniziale (TIGELLE_MAX, in tigelle) meno il consumo aggregato: 1 tigella ciascuno per Tigella vuota, Tigella CRUDO, Tigella COTTO e Tigella SALAME. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 9, "w": 6, "x": 18, "y": 9 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "max": %%TIGELLE_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%TIGELLE_MAX%% - (sum(sagra_qt_totale{id=\"58\"}) + sum(sagra_qt_totale{id=\"59\"}) + sum(sagra_qt_totale{id=\"60\"}) + sum(sagra_qt_totale{id=\"176\"}))",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    }
+  ]
+}

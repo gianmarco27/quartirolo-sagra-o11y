@@ -1,0 +1,60 @@
+name: sagra-monitoraggio
+
+services:
+  prometheus:
+    image: prom/prometheus:v3.13.1
+    container_name: sagra-prometheus
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=30d
+      # riceve il remote-write delle recording rule Grafana-managed
+      - --web.enable-remote-write-receiver
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:13.1.1
+    container_name: sagra-grafana
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=sagra
+      - GF_USERS_ALLOW_SIGN_UP=false
+      # Accesso anonimo in sola lettura: chiunque in LAN vede dashboard e alert
+      # senza login. L'utente 'admin' resta protetto da password per le modifiche.
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      - GF_AUTH_ANONYMOUS_ORG_NAME=Main Org.
+      # airgapped: nessuna chiamata verso internet
+      - GF_ANALYTICS_REPORTING_ENABLED=false
+      - GF_ANALYTICS_CHECK_FOR_UPDATES=false
+      - GF_NEWS_NEWS_FEED_ENABLED=false
+      # recording rule Grafana-managed: destinazione remote-write dei risultati
+      - GF_RECORDING_RULES_DEFAULT_DATASOURCE_UID=prometheus
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+
+  exporter:
+    build: ./exporter
+    image: sagra-exporter:local
+    container_name: sagra-exporter
+    restart: unless-stopped
+    env_file:
+      - ./exporter.env
+    ports:
+      - "8000:8000"
+
+volumes:
+  prometheus-data:
+  grafana-data:

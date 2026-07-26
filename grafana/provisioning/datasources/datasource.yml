@@ -1,0 +1,17 @@
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    uid: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: false
+    jsonData:
+      timeInterval: 30s
+      # CRITICO per le recording rule Grafana-managed: senza questo campo
+      # Grafana fa remote-write su /api/v1/push (Mimir/Cortex) e Prometheus
+      # risponde 404. Con "Prometheus" usa /api/v1/write. Vedi
+      # pkg/services/ngalert/writer/datasourcewriter.go (getRemoteWriteURL).
+      prometheusType: Prometheus

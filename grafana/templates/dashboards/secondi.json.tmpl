@@ -1,0 +1,410 @@
+{
+  "uid": "sagra-secondi",
+  "title": "Secondi",
+  "tags": ["sagra", "secondi"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "time": { "from": "now-2h", "to": "now" },
+  "templating": { "list": [] },
+  "annotations": { "list": [] },
+  "panels": [
+    {
+      "id": 5,
+      "type": "barchart",
+      "title": "Salsiccia — consumo al minuto",
+      "description": "Ritmo di vendita: pezzi di salsiccia consumati al minuto (differenza del totale ordinato rispetto al minuto precedente). Ogni barra = 1 minuto; una tacca sull'asse X ogni ~5 minuti. Asse temporale in ora reale, segue la finestra della dashboard.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 18, "x": 0, "y": 0 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 1,
+          "noValue": "0",
+          "color": { "mode": "fixed", "fixedColor": "green" },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "axisPlacement": "auto",
+            "axisLabel": "pezzi/min",
+            "axisGridShow": true,
+            "thresholdsStyle": { "mode": "off" }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "auto",
+        "xField": "Time",
+        "showValue": "never",
+        "stacking": "none",
+        "groupWidth": 0.7,
+        "barWidth": 0.9,
+        "barRadius": 0,
+        "fullHighlight": false,
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 55,
+        "legend": {
+          "showLegend": false,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        },
+        "tooltip": { "mode": "single", "sort": "none" }
+      },
+      "interval": "1m",
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sagra:consumo_1m:salsiccia",
+          "legendFormat": "consumo/min"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "type": "gauge",
+      "title": "Salsiccia — pezzi rimanenti",
+      "description": "Scorta iniziale (SALSICCIA_MAX, in pezzi) meno il consumo aggregato: 1 pezzo per Grigliata Mista Carne + 1 pezzo per Salsiccia e Patatine. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 0 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "max": %%SALSICCIA_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%SALSICCIA_MAX%% - (sum(sagra_qt_totale{id=\"43\"}) + sum(sagra_qt_totale{id=\"44\"}))",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "barchart",
+      "title": "Spiedini di pesce — consumo al minuto",
+      "description": "Ritmo di vendita: unità di spiedini di pesce consumate al minuto (differenza del totale ordinato rispetto al minuto precedente). Ogni barra = 1 minuto; una tacca sull'asse X ogni ~5 minuti. Asse temporale in ora reale, segue la finestra della dashboard.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 18, "x": 0, "y": 8 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 1,
+          "noValue": "0",
+          "color": { "mode": "fixed", "fixedColor": "green" },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "axisPlacement": "auto",
+            "axisLabel": "unità/min",
+            "axisGridShow": true,
+            "thresholdsStyle": { "mode": "off" }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "auto",
+        "xField": "Time",
+        "showValue": "never",
+        "stacking": "none",
+        "groupWidth": 0.7,
+        "barWidth": 0.9,
+        "barRadius": 0,
+        "fullHighlight": false,
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 55,
+        "legend": {
+          "showLegend": false,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        },
+        "tooltip": { "mode": "single", "sort": "none" }
+      },
+      "interval": "1m",
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sagra:consumo_1m:spiedini_pesce",
+          "legendFormat": "consumo/min"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "gauge",
+      "title": "Spiedini di pesce — unità rimanenti",
+      "description": "Scorta iniziale (SPIEDINI_PESCE_MAX, in unità) meno il consumo: 3 unità per ogni piatto Spiedini di Pesce 3Pz. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 8 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "max": %%SPIEDINI_PESCE_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%SPIEDINI_PESCE_MAX%% - (3 * sum(sagra_qt_totale{id=\"411\"}))",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "barchart",
+      "title": "Fritto misto — consumo al minuto",
+      "description": "Ritmo di vendita: cartoni di fritto misto consumati al minuto (differenza del totale ordinato rispetto al minuto precedente; 1 cartone = 13 piatti). Ogni barra = 1 minuto; una tacca sull'asse X ogni ~5 minuti. Asse temporale in ora reale, segue la finestra della dashboard.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 18, "x": 0, "y": 16 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 2,
+          "noValue": "0",
+          "color": { "mode": "fixed", "fixedColor": "green" },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "axisPlacement": "auto",
+            "axisLabel": "cartoni/min",
+            "axisGridShow": true,
+            "thresholdsStyle": { "mode": "off" }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "auto",
+        "xField": "Time",
+        "showValue": "never",
+        "stacking": "none",
+        "groupWidth": 0.7,
+        "barWidth": 0.9,
+        "barRadius": 0,
+        "fullHighlight": false,
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 55,
+        "legend": {
+          "showLegend": false,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        },
+        "tooltip": { "mode": "single", "sort": "none" }
+      },
+      "interval": "1m",
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sagra:consumo_1m:fritto_misto",
+          "legendFormat": "consumo/min"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "gauge",
+      "title": "Fritto misto — cartoni rimanenti",
+      "description": "Scorta iniziale (FRITTO_MISTO_MAX, in cartoni; 1 cartone = 13 piatti) meno il consumo: qt(Fritto Misto Mare) / 13. Verde = abbondante, giallo = in calo, rosso = quasi esaurito. Alert quando restano meno di 2 cartoni.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 16 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 1,
+          "min": 0,
+          "max": %%FRITTO_MISTO_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%FRITTO_MISTO_MAX%% - (sum(sagra_qt_totale{id=\"42\"}) / 13)",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "barchart",
+      "title": "Tigelle — consumo al minuto",
+      "description": "Ritmo di vendita: tigelle consumate al minuto (differenza del totale ordinato rispetto al minuto precedente). Ogni barra = 1 minuto; una tacca sull'asse X ogni ~5 minuti. Asse temporale in ora reale, segue la finestra della dashboard.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 18, "x": 0, "y": 24 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 1,
+          "noValue": "0",
+          "color": { "mode": "fixed", "fixedColor": "green" },
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "axisPlacement": "auto",
+            "axisLabel": "tigelle/min",
+            "axisGridShow": true,
+            "thresholdsStyle": { "mode": "off" }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "auto",
+        "xField": "Time",
+        "showValue": "never",
+        "stacking": "none",
+        "groupWidth": 0.7,
+        "barWidth": 0.9,
+        "barRadius": 0,
+        "fullHighlight": false,
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 55,
+        "legend": {
+          "showLegend": false,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        },
+        "tooltip": { "mode": "single", "sort": "none" }
+      },
+      "interval": "1m",
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "sagra:consumo_1m:tigelle",
+          "legendFormat": "consumo/min"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "gauge",
+      "title": "Tigelle — unità rimanenti",
+      "description": "Scorta iniziale (TIGELLE_MAX, in tigelle) meno il consumo aggregato: 1 tigella ciascuno per Tigella vuota, Tigella CRUDO, Tigella COTTO e Tigella SALAME. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 24 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "max": %%TIGELLE_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%TIGELLE_MAX%% - (sum(sagra_qt_totale{id=\"58\"}) + sum(sagra_qt_totale{id=\"59\"}) + sum(sagra_qt_totale{id=\"60\"}) + sum(sagra_qt_totale{id=\"176\"}))",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+global:
+  # Scrape a 10s: l'exporter aggiorna i dati del gestionale ogni 10s
+  # (REFRESH_INTERVAL), quindi Prometheus li cattura con la stessa cadenza.
+  scrape_interval: 10s
+  scrape_timeout: 8s
+  evaluation_interval: 10s
+
+# Nessuna rule qui: le recording rule del consumo BOM "al minuto" sono
+# GRAFANA-MANAGED (grafana/templates/provisioning/alerting/recording_bom.yaml.tmpl).
+# Grafana le valuta e ne scrive il risultato qui via remote-write, per questo
+# il container Prometheus e' avviato con --web.enable-remote-write-receiver.
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: sagra
+    # esplicito (eredita comunque il global): scrape dell'exporter ogni 10s,
+    # allineato al REFRESH_INTERVAL con cui l'exporter rilegge il gestionale
+    scrape_interval: 10s
+    static_configs:
+      - targets: ["exporter:8000"]

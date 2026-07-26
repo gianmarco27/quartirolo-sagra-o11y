@@ -1,0 +1,73 @@
+apiVersion: 1
+
+# Generato da tools/render.py a partire da questo .tmpl + limits.env.
+# I segnaposto %%TORTELLI_SPECK_MAX%% e %%ALLERTA_TORTELLI_SPECK_RIMANENTI%%
+# vengono sostituiti con i valori di limits.env. NON modificare il file .yaml
+# generato: modifica limits.env e rilancia `make render` (o `make up`).
+
+groups:
+  - orgId: 1
+    name: Primi
+    folder: Sagra
+    interval: 1m
+    rules:
+      - uid: sagra-tortelli-speck-rimanenti
+        title: Tortelli speck in esaurimento
+        condition: C
+        # A = pezzi di tortelli speck consumati (aggregato BOM, live):
+        #     8 per Tortello Patate Speck + 3 per ciascun tris (Tortelli Burro, Tortelli Ragu)
+        # B = pezzi rimanenti = TORTELLI_SPECK_MAX - A
+        # C = allerta se rimanenti < ALLERTA_TORTELLI_SPECK_RIMANENTI (preventiva)
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: prometheus
+            model:
+              refId: A
+              datasource:
+                type: prometheus
+                uid: prometheus
+              editorMode: code
+              instant: true
+              range: false
+              expr: '8 * sum(sagra_qt_totale{id="369"}) + 3 * sum(sagra_qt_totale{id="416"}) + 3 * sum(sagra_qt_totale{id="441"})'
+              intervalMs: 1000
+              maxDataPoints: 43200
+          - refId: B
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: __expr__
+            model:
+              refId: B
+              type: math
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: '%%TORTELLI_SPECK_MAX%% - $A'
+          - refId: C
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              datasource:
+                type: __expr__
+                uid: __expr__
+              expression: B
+              conditions:
+                - evaluator:
+                    type: lt
+                    params: [%%ALLERTA_TORTELLI_SPECK_RIMANENTI%%]
+        noDataState: OK
+        execErrState: Error
+        for: 0m
+        labels:
+          categoria: primi
+          severita: warning
+        annotations:
+          summary: 'Tortelli speck in esaurimento: restano meno di %%ALLERTA_TORTELLI_SPECK_RIMANENTI%% pezzi (scorta iniziale %%TORTELLI_SPECK_MAX%%).'
