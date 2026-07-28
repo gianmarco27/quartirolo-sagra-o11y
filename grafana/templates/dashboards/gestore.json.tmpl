@@ -49,7 +49,7 @@
         {
           "refId": "A",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "%%LASAGNE_MAX%% - (sum(sagra_qt_totale{id=\"36\"}) + (3/7) * sum(sagra_qt_totale{id=\"37\"}))",
+          "expr": "%%LASAGNE_MAX%% - ((sum(sagra_qt_totale{id=\"36\"}) or vector(0)) + (3/7) * (sum(sagra_qt_totale{id=\"37\"}) or vector(0)))",
           "legendFormat": "rimanenti",
           "instant": true
         }
@@ -94,7 +94,7 @@
         {
           "refId": "A",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "%%TORTELLI_RICOTTA_MAX%% - (8 * sum(sagra_qt_totale{id=\"409\"}) + 3 * sum(sagra_qt_totale{id=\"416\"}) + 3 * sum(sagra_qt_totale{id=\"441\"}) + 3 * sum(sagra_qt_totale{id=\"37\"}))",
+          "expr": "%%TORTELLI_RICOTTA_MAX%% - (8 * (sum(sagra_qt_totale{id=\"409\"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id=\"416\"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id=\"441\"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id=\"37\"}) or vector(0)))",
           "legendFormat": "rimanenti",
           "instant": true
         }
@@ -139,7 +139,7 @@
         {
           "refId": "A",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "%%TORTELLI_ZUCCA_MAX%% - (8 * sum(sagra_qt_totale{id=\"370\"}) + 8 * sum(sagra_qt_totale{id=\"151\"}) + 3 * sum(sagra_qt_totale{id=\"416\"}) + 3 * sum(sagra_qt_totale{id=\"441\"}))",
+          "expr": "%%TORTELLI_ZUCCA_MAX%% - (8 * (sum(sagra_qt_totale{id=\"370\"}) or vector(0)) + 8 * (sum(sagra_qt_totale{id=\"151\"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id=\"416\"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id=\"441\"}) or vector(0)))",
           "legendFormat": "rimanenti",
           "instant": true
         }
@@ -184,7 +184,7 @@
         {
           "refId": "A",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "%%TORTELLI_SPECK_MAX%% - (8 * sum(sagra_qt_totale{id=\"369\"}) + 3 * sum(sagra_qt_totale{id=\"416\"}) + 3 * sum(sagra_qt_totale{id=\"441\"}))",
+          "expr": "%%TORTELLI_SPECK_MAX%% - (8 * (sum(sagra_qt_totale{id=\"369\"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id=\"416\"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id=\"441\"}) or vector(0)))",
           "legendFormat": "rimanenti",
           "instant": true
         }
@@ -229,7 +229,7 @@
         {
           "refId": "A",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "%%SALSICCIA_MAX%% - (sum(sagra_qt_totale{id=\"43\"}) + sum(sagra_qt_totale{id=\"44\"}))",
+          "expr": "%%SALSICCIA_MAX%% - ((sum(sagra_qt_totale{id=\"43\"}) or vector(0)) + (sum(sagra_qt_totale{id=\"44\"}) or vector(0)))",
           "legendFormat": "rimanenti",
           "instant": true
         }
@@ -274,7 +274,7 @@
         {
           "refId": "A",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "%%SPIEDINI_PESCE_MAX%% - (3 * sum(sagra_qt_totale{id=\"411\"}))",
+          "expr": "%%SPIEDINI_PESCE_MAX%% - (3 * (sum(sagra_qt_totale{id=\"411\"}) or vector(0)))",
           "legendFormat": "rimanenti",
           "instant": true
         }
@@ -319,7 +319,7 @@
         {
           "refId": "A",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "%%FRITTO_MISTO_MAX%% - (sum(sagra_qt_totale{id=\"42\"}) / 13)",
+          "expr": "%%FRITTO_MISTO_MAX%% - ((sum(sagra_qt_totale{id=\"42\"}) or vector(0)) / 13)",
           "legendFormat": "rimanenti",
           "instant": true
         }
@@ -364,7 +364,7 @@
         {
           "refId": "A",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "%%TIGELLE_MAX%% - (sum(sagra_qt_totale{id=\"58\"}) + sum(sagra_qt_totale{id=\"59\"}) + sum(sagra_qt_totale{id=\"60\"}) + sum(sagra_qt_totale{id=\"176\"}))",
+          "expr": "%%TIGELLE_MAX%% - ((sum(sagra_qt_totale{id=\"58\"}) or vector(0)) + (sum(sagra_qt_totale{id=\"59\"}) or vector(0)) + (sum(sagra_qt_totale{id=\"60\"}) or vector(0)) + (sum(sagra_qt_totale{id=\"176\"}) or vector(0)))",
           "legendFormat": "rimanenti",
           "instant": true
         }

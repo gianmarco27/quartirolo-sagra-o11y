@@ -12,7 +12,7 @@ EXP_IMG   := sagra-exporter:local
 ENV_FILES := $(wildcard exporter.env exporter.env.example limits.env limits.env.example)
 
 .DEFAULT_GOAL := help
-.PHONY: help up down restart reload logs ps build pull save load firewall setup fmt lint render test-e2e
+.PHONY: help up down restart reload watch logs ps build pull save load firewall setup fmt lint render test-e2e
 
 help: ## Mostra questo aiuto
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | sed 's/:.*##/\t/' | sort
@@ -21,11 +21,27 @@ up: render ## Avvia lo stack e applica il provisioning Grafana (alert da limits.
 	$(DC) up -d
 	@echo "Ricarico Grafana per applicare gli alert da limits.env..."
 	$(DC) restart grafana
+	make watch
 
 reload: render ## Applica limits.env aggiornato senza fermare exporter/prometheus (ricarica solo Grafana)
 	$(DC) up -d
 	@echo "Rigenerati i file da limits.env, ricarico gli alert Grafana (le dashboard si aggiornano da sole)..."
 	$(DC) restart grafana
+
+watch: ## Osserva limits.env: a ogni salvataggio rigenera dashboard/alert e ricarica Grafana (Ctrl-C per fermare)
+	@echo "Osservo limits.env: a ogni modifica rigenero e ricarico Grafana (Ctrl-C per fermare)."
+	@last=""; \
+	while true; do \
+		cur=$$(cksum limits.env 2>/dev/null); \
+		if [ "$$cur" != "$$last" ]; then \
+			if [ -n "$$last" ]; then \
+				echo "Modifica rilevata in limits.env: rigenero e ricarico..."; \
+				$(MAKE) reload; \
+			fi; \
+			last="$$cur"; \
+		fi; \
+		sleep 2; \
+	done
 
 down: ## Ferma e rimuove i container
 	$(DC) down

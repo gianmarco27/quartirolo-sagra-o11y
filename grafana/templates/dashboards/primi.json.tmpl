@@ -59,7 +59,7 @@
         {
           "refId": "A",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sagra:consumo_1m:lasagne",
+          "expr": "sagra:consumo_1m:lasagne or vector(0)",
           "legendFormat": "consumo/min"
         }
       ]
@@ -103,7 +103,7 @@
         {
           "refId": "A",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "%%LASAGNE_MAX%% - (sum(sagra_qt_totale{id=\"36\"}) + (3/7) * sum(sagra_qt_totale{id=\"37\"}))",
+          "expr": "%%LASAGNE_MAX%% - ((sum(sagra_qt_totale{id=\"36\"}) or vector(0)) + (3/7) * (sum(sagra_qt_totale{id=\"37\"}) or vector(0)))",
           "legendFormat": "rimanenti",
           "instant": true
         }
@@ -158,7 +158,7 @@
         {
           "refId": "A",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sagra:consumo_1m:tortelli_ricotta",
+          "expr": "sagra:consumo_1m:tortelli_ricotta or vector(0)",
           "legendFormat": "consumo/min"
         }
       ]
@@ -202,7 +202,7 @@
         {
           "refId": "A",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "%%TORTELLI_RICOTTA_MAX%% - (8 * sum(sagra_qt_totale{id=\"409\"}) + 3 * sum(sagra_qt_totale{id=\"416\"}) + 3 * sum(sagra_qt_totale{id=\"441\"}) + 3 * sum(sagra_qt_totale{id=\"37\"}))",
+          "expr": "%%TORTELLI_RICOTTA_MAX%% - (8 * (sum(sagra_qt_totale{id=\"409\"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id=\"416\"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id=\"441\"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id=\"37\"}) or vector(0)))",
           "legendFormat": "rimanenti",
           "instant": true
         }
@@ -257,7 +257,7 @@
         {
           "refId": "A",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sagra:consumo_1m:tortelli_zucca",
+          "expr": "sagra:consumo_1m:tortelli_zucca or vector(0)",
           "legendFormat": "consumo/min"
         }
       ]
@@ -301,7 +301,7 @@
         {
           "refId": "A",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "%%TORTELLI_ZUCCA_MAX%% - (8 * sum(sagra_qt_totale{id=\"370\"}) + 8 * sum(sagra_qt_totale{id=\"151\"}) + 3 * sum(sagra_qt_totale{id=\"416\"}) + 3 * sum(sagra_qt_totale{id=\"441\"}))",
+          "expr": "%%TORTELLI_ZUCCA_MAX%% - (8 * (sum(sagra_qt_totale{id=\"370\"}) or vector(0)) + 8 * (sum(sagra_qt_totale{id=\"151\"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id=\"416\"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id=\"441\"}) or vector(0)))",
           "legendFormat": "rimanenti",
           "instant": true
         }
@@ -356,7 +356,7 @@
         {
           "refId": "A",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "sagra:consumo_1m:tortelli_speck",
+          "expr": "sagra:consumo_1m:tortelli_speck or vector(0)",
           "legendFormat": "consumo/min"
         }
       ]
@@ -400,7 +400,7 @@
         {
           "refId": "A",
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "%%TORTELLI_SPECK_MAX%% - (8 * sum(sagra_qt_totale{id=\"369\"}) + 3 * sum(sagra_qt_totale{id=\"416\"}) + 3 * sum(sagra_qt_totale{id=\"441\"}))",
+          "expr": "%%TORTELLI_SPECK_MAX%% - (8 * (sum(sagra_qt_totale{id=\"369\"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id=\"416\"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id=\"441\"}) or vector(0)))",
           "legendFormat": "rimanenti",
           "instant": true
         }
