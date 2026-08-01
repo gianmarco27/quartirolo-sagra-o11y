@@ -32,7 +32,7 @@ groups:
               editorMode: code
               instant: true
               range: false
-              expr: 'sum(sagra_qt_totale{id="43"}) + sum(sagra_qt_totale{id="44"})'
+              expr: '(sum(sagra_qt_totale{id="43"}) or vector(0)) + (sum(sagra_qt_totale{id="44"}) or vector(0))'
               intervalMs: 1000
               maxDataPoints: 43200
           - refId: B

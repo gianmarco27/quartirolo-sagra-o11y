@@ -11,12 +11,20 @@
   "annotations": { "list": [] },
   "panels": [
     {
+      "id": 100,
+      "type": "row",
+      "title": "Primi",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "collapsed": false,
+      "panels": []
+    },
+    {
       "id": 1,
       "type": "gauge",
       "title": "Lasagne — porzioni rimanenti",
       "description": "Scorta iniziale (LASAGNE_MAX) meno il consumo aggregato (1 per Lasagne Tradizionali + 3/7 per Tris di pasta). Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 0 },
+      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 1 },
       "fieldConfig": {
         "defaults": {
           "unit": "short",
@@ -61,7 +69,7 @@
       "title": "Tortelli ricotta (verdi) — pezzi rimanenti",
       "description": "Scorta iniziale (TORTELLI_RICOTTA_MAX, in pezzi) meno il consumo aggregato: 8 pezzi per Tortelli alla Ricotta (porzione) + 3 pezzi ciascuno per Tris Tortelli Burro, Tris Tortelli Ragù e Tris di pasta. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 0 },
+      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 1 },
       "fieldConfig": {
         "defaults": {
           "unit": "short",
@@ -106,7 +114,7 @@
       "title": "Tortelli zucca — pezzi rimanenti",
       "description": "Scorta iniziale (TORTELLI_ZUCCA_MAX, in pezzi) meno il consumo aggregato: 8 pezzi ciascuno per Tortello Zucca Burro e Tortelloni Zucca Ragù (porzioni) + 3 pezzi ciascuno per Tris Tortelli Burro e Tris Tortelli Ragù. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "gridPos": { "h": 7, "w": 6, "x": 12, "y": 0 },
+      "gridPos": { "h": 7, "w": 6, "x": 12, "y": 1 },
       "fieldConfig": {
         "defaults": {
           "unit": "short",
@@ -151,7 +159,7 @@
       "title": "Tortelli speck — pezzi rimanenti",
       "description": "Scorta iniziale (TORTELLI_SPECK_MAX, in pezzi) meno il consumo aggregato: 8 pezzi per Tortello Patate Speck (porzione) + 3 pezzi ciascuno per Tris Tortelli Burro e Tris Tortelli Ragù. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "gridPos": { "h": 7, "w": 6, "x": 18, "y": 0 },
+      "gridPos": { "h": 7, "w": 6, "x": 18, "y": 1 },
       "fieldConfig": {
         "defaults": {
           "unit": "short",
@@ -191,12 +199,20 @@
       ]
     },
     {
+      "id": 101,
+      "type": "row",
+      "title": "Secondi",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 8 },
+      "collapsed": false,
+      "panels": []
+    },
+    {
       "id": 5,
       "type": "gauge",
       "title": "Salsiccia — pezzi rimanenti",
       "description": "Scorta iniziale (SALSICCIA_MAX, in pezzi) meno il consumo aggregato: 1 pezzo per Grigliata Mista Carne + 1 pezzo per Salsiccia e Patatine. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 7 },
+      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 9 },
       "fieldConfig": {
         "defaults": {
           "unit": "short",
@@ -241,7 +257,7 @@
       "title": "Spiedini di pesce — unità rimanenti",
       "description": "Scorta iniziale (SPIEDINI_PESCE_MAX, in unità) meno il consumo: 3 unità per ogni piatto Spiedini di Pesce 3Pz. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 7 },
+      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 9 },
       "fieldConfig": {
         "defaults": {
           "unit": "short",
@@ -286,7 +302,7 @@
       "title": "Fritto misto — cartoni rimanenti",
       "description": "Scorta iniziale (FRITTO_MISTO_MAX, in cartoni; 1 cartone = 13 piatti) meno il consumo: qt(Fritto Misto Mare) / 13. Verde = abbondante, giallo = in calo, rosso = quasi esaurito. Alert quando restano meno di 2 cartoni.",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "gridPos": { "h": 7, "w": 6, "x": 12, "y": 7 },
+      "gridPos": { "h": 7, "w": 6, "x": 12, "y": 9 },
       "fieldConfig": {
         "defaults": {
           "unit": "short",
@@ -326,12 +342,20 @@
       ]
     },
     {
+      "id": 102,
+      "type": "row",
+      "title": "Gnoccheria",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 16 },
+      "collapsed": false,
+      "panels": []
+    },
+    {
       "id": 8,
       "type": "gauge",
       "title": "Tigelle — unità rimanenti",
       "description": "Scorta iniziale (TIGELLE_MAX, in tigelle) meno il consumo aggregato: 1 tigella ciascuno per Tigella vuota, Tigella CRUDO, Tigella COTTO e Tigella SALAME. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "gridPos": { "h": 7, "w": 6, "x": 18, "y": 7 },
+      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 17 },
       "fieldConfig": {
         "defaults": {
           "unit": "short",
@@ -371,11 +395,64 @@
       ]
     },
     {
+      "id": 10,
+      "type": "gauge",
+      "title": "Gnocco fritto — pezzi rimanenti",
+      "description": "Scorta iniziale (GNOCCO_FRITTO_MAX, in pezzi) meno il consumo aggregato: 1 gnocco per Gnocco Fritto (1pz) e 2 gnocchi ciascuno per Gnocco con CRUDO, Gnocco con COTTO e Gnocco con SALAME. Verde = abbondante, giallo = in calo, rosso = quasi esaurito.",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 17 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "max": %%GNOCCO_FRITTO_MAX%%,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 20 },
+              { "color": "green", "value": 50 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "%%GNOCCO_FRITTO_MAX%% - ((sum(sagra_qt_totale{id=\"53\"}) or vector(0)) + 2 * (sum(sagra_qt_totale{id=\"54\"}) or vector(0)) + 2 * (sum(sagra_qt_totale{id=\"55\"}) or vector(0)) + 2 * (sum(sagra_qt_totale{id=\"56\"}) or vector(0)))",
+          "legendFormat": "rimanenti",
+          "instant": true
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "type": "row",
+      "title": "Allarmi",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 24 },
+      "collapsed": false,
+      "panels": []
+    },
+    {
       "id": 9,
       "type": "alertlist",
       "title": "Allarmi attivi — ingredienti in riserva",
       "description": "Elenco in tempo reale degli ingredienti sotto la soglia di allerta (stato di allarme). Se vuoto, tutte le scorte sono sopra soglia. Ordinato per importanza.",
-      "gridPos": { "h": 4, "w": 24, "x": 0, "y": 14 },
+      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 25 },
       "options": {
         "viewMode": "list",
         "groupMode": "default",

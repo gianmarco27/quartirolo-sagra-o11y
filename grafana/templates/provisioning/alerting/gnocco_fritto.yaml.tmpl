@@ -1,23 +1,23 @@
 apiVersion: 1
 
 # Generato da tools/render.py a partire da questo .tmpl + limits.env.
-# I segnaposto %%FRITTO_MISTO_MAX%% e %%ALLERTA_FRITTO_MISTO_RIMANENTI%% vengono
-# sostituiti con i valori di limits.env. NON modificare il file .yaml
+# I segnaposto %%GNOCCO_FRITTO_MAX%% e %%ALLERTA_GNOCCO_FRITTO_RIMANENTI%%
+# vengono sostituiti con i valori di limits.env. NON modificare il file .yaml
 # generato: modifica limits.env e rilancia `make render` (o `make up`).
 
 groups:
   - orgId: 1
-    name: Secondi
+    name: Gestore
     folder: Sagra
     interval: 1m
     rules:
-      - uid: sagra-fritto-misto-rimanenti
-        title: Fritto misto in esaurimento
+      - uid: sagra-gnocco-fritto-rimanenti
+        title: Gnocco fritto in esaurimento
         condition: C
-        # Unità di misura: CARTONI (1 cartone = 13 piatti Fritto Misto Mare).
-        # A = cartoni consumati (live) = qt(Fritto Misto Mare) / 13
-        # B = cartoni rimanenti = FRITTO_MISTO_MAX - A
-        # C = allerta se rimanenti < ALLERTA_FRITTO_MISTO_RIMANENTI (es. 2 cartoni)
+        # A = gnocchi consumati (aggregato BOM, live): 1 pezzo per Gnocco Fritto (1pz),
+        #     2 pezzi ciascuno per Gnocco con CRUDO / con COTTO / con SALAME
+        # B = gnocchi rimanenti = GNOCCO_FRITTO_MAX - A
+        # C = allerta se rimanenti < ALLERTA_GNOCCO_FRITTO_RIMANENTI (preventiva)
         data:
           - refId: A
             relativeTimeRange:
@@ -32,7 +32,7 @@ groups:
               editorMode: code
               instant: true
               range: false
-              expr: '(sum(sagra_qt_totale{id="42"}) or vector(0)) / 13'
+              expr: '(sum(sagra_qt_totale{id="53"}) or vector(0)) + 2 * (sum(sagra_qt_totale{id="54"}) or vector(0)) + 2 * (sum(sagra_qt_totale{id="55"}) or vector(0)) + 2 * (sum(sagra_qt_totale{id="56"}) or vector(0))'
               intervalMs: 1000
               maxDataPoints: 43200
           - refId: B
@@ -46,7 +46,7 @@ groups:
               datasource:
                 type: __expr__
                 uid: __expr__
-              expression: '%%FRITTO_MISTO_MAX%% - $A'
+              expression: '%%GNOCCO_FRITTO_MAX%% - $A'
           - refId: C
             relativeTimeRange:
               from: 600
@@ -62,14 +62,14 @@ groups:
               conditions:
                 - evaluator:
                     type: lt
-                    params: [%%ALLERTA_FRITTO_MISTO_RIMANENTI%%]
+                    params: [%%ALLERTA_GNOCCO_FRITTO_RIMANENTI%%]
         noDataState: OK
         execErrState: Error
         for: 0m
         labels:
-          categoria: secondi
+          categoria: gestore
           severita: warning
         annotations:
           __dashboardUid__: sagra-gestore
-          __panelId__: "7"
-          summary: 'Fritto misto in esaurimento: restano meno di %%ALLERTA_FRITTO_MISTO_RIMANENTI%% cartoni (scorta iniziale %%FRITTO_MISTO_MAX%% cartoni, 1 cartone = 13 piatti).'
+          __panelId__: "10"
+          summary: 'Gnocco fritto in esaurimento: restano meno di %%ALLERTA_GNOCCO_FRITTO_RIMANENTI%% pezzi (scorta iniziale %%GNOCCO_FRITTO_MAX%%).'

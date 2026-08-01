@@ -32,7 +32,7 @@ groups:
               editorMode: code
               instant: true
               range: false
-              expr: '8 * sum(sagra_qt_totale{id="409"}) + 3 * sum(sagra_qt_totale{id="416"}) + 3 * sum(sagra_qt_totale{id="441"}) + 3 * sum(sagra_qt_totale{id="37"})'
+              expr: '8 * (sum(sagra_qt_totale{id="409"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id="416"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id="441"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id="37"}) or vector(0))'
               intervalMs: 1000
               maxDataPoints: 43200
           - refId: B

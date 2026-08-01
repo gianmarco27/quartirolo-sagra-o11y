@@ -63,6 +63,7 @@ Gli allarmi si vedono **direttamente nelle dashboard**:
   accentratore): elenca in tempo reale gli allarmi in stato _firing_/_pending_. Se è vuoto,
   tutte le scorte sono sopra soglia.
 - **Ogni allarme è collegato al proprio gauge** (annotazioni `__dashboardUid__`/`__panelId__`):
-  Lasagne/Tortelli → gauge _Primi_, Salsiccia/Spiedini/Fritto/Tigelle → gauge _Secondi_. Il
+  Lasagne/Tortelli → gauge _Primi_, Salsiccia/Spiedini → gauge _Secondi_,
+  Fritto misto/Tigelle/Gnocco fritto → gauge _Gestore_. Il
   gauge diventa **rosso** al superamento della soglia. Gli allarmi non fanno _flapping_: una
   volta in riserva ci si resta, quindi il gauge rosso + il pannello elenco bastano a segnalare.

@@ -16,6 +16,14 @@ apiVersion: 1
 # Ogni serie sagra:consumo_1m:<bom> ha 1 campione al minuto e alimenta i
 # barchart delle dashboard Primi/Secondi.
 #
+# Fallback a zero: `or vector(0)` e' applicato a OGNI singolo termine
+# sum(sagra_qt_totale{...}) (sia "ora" sia "offset 1m"), non solo al risultato
+# finale. Motivo: a inizio serata (o finche' un articolo non viene mai
+# ordinato) la sua serie non esiste; senza fallback per-termine l'intera somma
+# diventerebbe vuota e la regola registrerebbe 0 anche quando gli altri
+# articoli del BOM stanno consumando. Con il fallback ogni articolo mancante
+# vale 0 e il consumo degli altri viene contabilizzato correttamente.
+#
 # File senza soglie: passa da tools/render.py solo per uniformita' (nessun
 # segnaposto tra doppi percento da interpolare).
 
@@ -42,7 +50,7 @@ groups:
               editorMode: code
               instant: true
               range: false
-              expr: 'clamp_min((sum(sagra_qt_totale{id="36"}) + (3/7) * sum(sagra_qt_totale{id="37"})) - (sum(sagra_qt_totale{id="36"} offset 1m) + (3/7) * sum(sagra_qt_totale{id="37"} offset 1m)), 0) or vector(0)'
+              expr: 'clamp_min(((sum(sagra_qt_totale{id="36"}) or vector(0)) + (3/7) * (sum(sagra_qt_totale{id="37"}) or vector(0))) - ((sum(sagra_qt_totale{id="36"} offset 1m) or vector(0)) + (3/7) * (sum(sagra_qt_totale{id="37"} offset 1m) or vector(0))), 0) or vector(0)'
               intervalMs: 1000
               maxDataPoints: 43200
         record:
@@ -67,7 +75,7 @@ groups:
               editorMode: code
               instant: true
               range: false
-              expr: 'clamp_min((8 * sum(sagra_qt_totale{id="409"}) + 3 * sum(sagra_qt_totale{id="416"}) + 3 * sum(sagra_qt_totale{id="441"}) + 3 * sum(sagra_qt_totale{id="37"})) - (8 * sum(sagra_qt_totale{id="409"} offset 1m) + 3 * sum(sagra_qt_totale{id="416"} offset 1m) + 3 * sum(sagra_qt_totale{id="441"} offset 1m) + 3 * sum(sagra_qt_totale{id="37"} offset 1m)), 0) or vector(0)'
+              expr: 'clamp_min((8 * (sum(sagra_qt_totale{id="409"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id="416"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id="441"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id="37"}) or vector(0))) - (8 * (sum(sagra_qt_totale{id="409"} offset 1m) or vector(0)) + 3 * (sum(sagra_qt_totale{id="416"} offset 1m) or vector(0)) + 3 * (sum(sagra_qt_totale{id="441"} offset 1m) or vector(0)) + 3 * (sum(sagra_qt_totale{id="37"} offset 1m) or vector(0))), 0) or vector(0)'
               intervalMs: 1000
               maxDataPoints: 43200
         record:
@@ -92,7 +100,7 @@ groups:
               editorMode: code
               instant: true
               range: false
-              expr: 'clamp_min((8 * sum(sagra_qt_totale{id="370"}) + 8 * sum(sagra_qt_totale{id="151"}) + 3 * sum(sagra_qt_totale{id="416"}) + 3 * sum(sagra_qt_totale{id="441"})) - (8 * sum(sagra_qt_totale{id="370"} offset 1m) + 8 * sum(sagra_qt_totale{id="151"} offset 1m) + 3 * sum(sagra_qt_totale{id="416"} offset 1m) + 3 * sum(sagra_qt_totale{id="441"} offset 1m)), 0) or vector(0)'
+              expr: 'clamp_min((8 * (sum(sagra_qt_totale{id="370"}) or vector(0)) + 8 * (sum(sagra_qt_totale{id="151"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id="416"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id="441"}) or vector(0))) - (8 * (sum(sagra_qt_totale{id="370"} offset 1m) or vector(0)) + 8 * (sum(sagra_qt_totale{id="151"} offset 1m) or vector(0)) + 3 * (sum(sagra_qt_totale{id="416"} offset 1m) or vector(0)) + 3 * (sum(sagra_qt_totale{id="441"} offset 1m) or vector(0))), 0) or vector(0)'
               intervalMs: 1000
               maxDataPoints: 43200
         record:
@@ -117,7 +125,7 @@ groups:
               editorMode: code
               instant: true
               range: false
-              expr: 'clamp_min((8 * sum(sagra_qt_totale{id="369"}) + 3 * sum(sagra_qt_totale{id="416"}) + 3 * sum(sagra_qt_totale{id="441"})) - (8 * sum(sagra_qt_totale{id="369"} offset 1m) + 3 * sum(sagra_qt_totale{id="416"} offset 1m) + 3 * sum(sagra_qt_totale{id="441"} offset 1m)), 0) or vector(0)'
+              expr: 'clamp_min((8 * (sum(sagra_qt_totale{id="369"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id="416"}) or vector(0)) + 3 * (sum(sagra_qt_totale{id="441"}) or vector(0))) - (8 * (sum(sagra_qt_totale{id="369"} offset 1m) or vector(0)) + 3 * (sum(sagra_qt_totale{id="416"} offset 1m) or vector(0)) + 3 * (sum(sagra_qt_totale{id="441"} offset 1m) or vector(0))), 0) or vector(0)'
               intervalMs: 1000
               maxDataPoints: 43200
         record:
@@ -143,7 +151,7 @@ groups:
               editorMode: code
               instant: true
               range: false
-              expr: 'clamp_min((sum(sagra_qt_totale{id="43"}) + sum(sagra_qt_totale{id="44"})) - (sum(sagra_qt_totale{id="43"} offset 1m) + sum(sagra_qt_totale{id="44"} offset 1m)), 0) or vector(0)'
+              expr: 'clamp_min(((sum(sagra_qt_totale{id="43"}) or vector(0)) + (sum(sagra_qt_totale{id="44"}) or vector(0))) - ((sum(sagra_qt_totale{id="43"} offset 1m) or vector(0)) + (sum(sagra_qt_totale{id="44"} offset 1m) or vector(0))), 0) or vector(0)'
               intervalMs: 1000
               maxDataPoints: 43200
         record:
@@ -168,7 +176,7 @@ groups:
               editorMode: code
               instant: true
               range: false
-              expr: 'clamp_min((3 * sum(sagra_qt_totale{id="411"})) - (3 * sum(sagra_qt_totale{id="411"} offset 1m)), 0) or vector(0)'
+              expr: 'clamp_min((3 * (sum(sagra_qt_totale{id="411"}) or vector(0))) - (3 * (sum(sagra_qt_totale{id="411"} offset 1m) or vector(0))), 0) or vector(0)'
               intervalMs: 1000
               maxDataPoints: 43200
         record:
@@ -193,7 +201,7 @@ groups:
               editorMode: code
               instant: true
               range: false
-              expr: 'clamp_min((sum(sagra_qt_totale{id="42"}) / 13) - (sum(sagra_qt_totale{id="42"} offset 1m) / 13), 0) or vector(0)'
+              expr: 'clamp_min(((sum(sagra_qt_totale{id="42"}) or vector(0)) / 13) - ((sum(sagra_qt_totale{id="42"} offset 1m) or vector(0)) / 13), 0) or vector(0)'
               intervalMs: 1000
               maxDataPoints: 43200
         record:
@@ -218,11 +226,37 @@ groups:
               editorMode: code
               instant: true
               range: false
-              expr: 'clamp_min((sum(sagra_qt_totale{id="58"}) + sum(sagra_qt_totale{id="59"}) + sum(sagra_qt_totale{id="60"}) + sum(sagra_qt_totale{id="176"})) - (sum(sagra_qt_totale{id="58"} offset 1m) + sum(sagra_qt_totale{id="59"} offset 1m) + sum(sagra_qt_totale{id="60"} offset 1m) + sum(sagra_qt_totale{id="176"} offset 1m)), 0) or vector(0)'
+              expr: 'clamp_min(((sum(sagra_qt_totale{id="58"}) or vector(0)) + (sum(sagra_qt_totale{id="59"}) or vector(0)) + (sum(sagra_qt_totale{id="60"}) or vector(0)) + (sum(sagra_qt_totale{id="176"}) or vector(0))) - ((sum(sagra_qt_totale{id="58"} offset 1m) or vector(0)) + (sum(sagra_qt_totale{id="59"} offset 1m) or vector(0)) + (sum(sagra_qt_totale{id="60"} offset 1m) or vector(0)) + (sum(sagra_qt_totale{id="176"} offset 1m) or vector(0))), 0) or vector(0)'
               intervalMs: 1000
               maxDataPoints: 43200
         record:
           metric: sagra:consumo_1m:tigelle
+          from: A
+          target_datasource_uid: prometheus
+        for: 0s
+
+      # --- Altri (gestore) ---
+      - uid: sagra-rec-gnocco-fritto
+        title: Consumo 1m — gnocco fritto
+        data:
+          - refId: A
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasourceUid: prometheus
+            model:
+              refId: A
+              datasource:
+                type: prometheus
+                uid: prometheus
+              editorMode: code
+              instant: true
+              range: false
+              expr: 'clamp_min(((sum(sagra_qt_totale{id="53"}) or vector(0)) + 2 * (sum(sagra_qt_totale{id="54"}) or vector(0)) + 2 * (sum(sagra_qt_totale{id="55"}) or vector(0)) + 2 * (sum(sagra_qt_totale{id="56"}) or vector(0))) - ((sum(sagra_qt_totale{id="53"} offset 1m) or vector(0)) + 2 * (sum(sagra_qt_totale{id="54"} offset 1m) or vector(0)) + 2 * (sum(sagra_qt_totale{id="55"} offset 1m) or vector(0)) + 2 * (sum(sagra_qt_totale{id="56"} offset 1m) or vector(0))), 0) or vector(0)'
+              intervalMs: 1000
+              maxDataPoints: 43200
+        record:
+          metric: sagra:consumo_1m:gnocco_fritto
           from: A
           target_datasource_uid: prometheus
         for: 0s

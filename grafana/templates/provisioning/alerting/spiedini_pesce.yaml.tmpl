@@ -31,7 +31,7 @@ groups:
               editorMode: code
               instant: true
               range: false
-              expr: '3 * sum(sagra_qt_totale{id="411"})'
+              expr: '3 * (sum(sagra_qt_totale{id="411"}) or vector(0))'
               intervalMs: 1000
               maxDataPoints: 43200
           - refId: B
